@@ -25,6 +25,5 @@ class Map:
                     wall_y = y * self.scale_y + self.y_offset
                     wall_rect_center = (wall_x, wall_y)
                     sprite_list.add(Wall(wall_rect_center, image))
-                    print("create shit on pos ", x, y)
                 x += 1
             y += 1

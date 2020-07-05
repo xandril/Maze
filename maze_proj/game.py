@@ -13,6 +13,12 @@ MAZE_HEIGHT = 8
 MAZE_WIDTH = 8
 
 
+def _create_player(pos, sprite_list, image):
+    player = Player(pos, image)
+    sprite_list.add(player)
+    return player
+
+
 class Game:
     def __init__(self, title: str, width: int, height: int):
         self.running = True
@@ -21,15 +27,18 @@ class Game:
         pygame.init()
         self.screen = pygame.display.set_mode((width, height))
         pygame.display.set_caption(title)
-        wall_image = ImageLoader.load_and_convert_image("sprites/brick_wall.png", (40, 40), 0)
-        player_image = ImageLoader.load_and_convert_image("sprites/space-ship-png-sprite.png", (20, 20), -90)
+        self.images = []
+        # add player_sprite
+        self.images.append(
+            ImageLoader.load_and_convert_image("sprites/space-ship-png-sprite.png", (int(X_OFFSET * 0.66), int(Y_OFFSET * 0.66)),
+                                               -90))
+        # add wall_sprite
+        self.images.append(ImageLoader.load_and_convert_image("sprites/brick_wall.png", (X_OFFSET, Y_OFFSET), 0))
         self.walls_list = pygame.sprite.Group()
-        self.maze_map = Map("maps/level.txt", MAZE_WIDTH, MAZE_HEIGHT, X_OFFSET, Y_OFFSET, X_SCALE, Y_SCALE)
-        self.maze_map.put_objects( self.walls_list, wall_image)
-        self.player = Player((width // 2, height // 2), player_image)
-
         self.player_list = pygame.sprite.Group()
-        self.player_list.add(self.player)
+        self.maze_map = Map("maps/level.txt", MAZE_WIDTH, MAZE_HEIGHT, X_OFFSET, Y_OFFSET, X_SCALE, Y_SCALE)
+        self.maze_map.put_objects(self.walls_list, self.images[1])
+        self.player = _create_player((30, self.height - 30), self.player_list, self.images[0])
 
     def _render(self):
         self.screen.fill((255, 255, 255))
@@ -38,10 +47,8 @@ class Game:
         pygame.display.flip()
 
     def _check_collision(self):
-        if pygame.sprite.groupcollide(self.player_list, self.walls_list, False, False):
-            print("collide")
-
-
+        if pygame.sprite.groupcollide(self.player_list, self.walls_list, True, False, pygame.sprite.collide_circle):
+            self.player = _create_player((30, self.height - 30), self.player_list, self.images[0])
 
     def _update(self):
         self.player.move()

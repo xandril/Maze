@@ -9,6 +9,7 @@ class Entity(pg.sprite.Sprite):
         self.rect.center = pos
         self.x_motion = 0
         self.y_motion = 0
+        self.radius = int(self.rect.width * .9 / 2)
 
     def rotate_sprite(self, image, angle):
         old_rect_center = self.rect.center
