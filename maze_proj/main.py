@@ -1,10 +1,9 @@
-import game
+from app import App
 
 
 def main():
     print("dafaq")
-    maze = game.Game("Maze", 600, 600)
-    maze.run()
+    App(600, 600, "dafaq").start()
 
 
 if __name__ == "__main__":

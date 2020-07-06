@@ -1,5 +1,6 @@
 import pygame
 
+from System.scenes import main_menu
 from System.image_loader import ImageLoader
 from System.map import Map
 from entity.player import Player
@@ -20,23 +21,22 @@ def _create_player(pos, sprite_list, image):
 
 
 class Game:
-    def __init__(self, title: str, width: int, height: int):
+    def __init__(self, screen, width: int, height: int, difficult: str):
         self.running = True
+        self.screen = screen
         self.width = width
         self.height = height
-        pygame.init()
-        self.screen = pygame.display.set_mode((width, height))
-        pygame.display.set_caption(title)
         self.images = []
         # add player_sprite
         self.images.append(
-            ImageLoader.load_and_convert_image("sprites/space-ship-png-sprite.png", (int(X_OFFSET * 0.66), int(Y_OFFSET * 0.66)),
+            ImageLoader.load_and_convert_image("sprites/space-ship-png-sprite.png",
+                                               (int(X_OFFSET * 0.66), int(Y_OFFSET * 0.66)),
                                                -90))
         # add wall_sprite
         self.images.append(ImageLoader.load_and_convert_image("sprites/brick_wall.png", (X_OFFSET, Y_OFFSET), 0))
         self.walls_list = pygame.sprite.Group()
         self.player_list = pygame.sprite.Group()
-        self.maze_map = Map("maps/level.txt", MAZE_WIDTH, MAZE_HEIGHT, X_OFFSET, Y_OFFSET, X_SCALE, Y_SCALE)
+        self.maze_map = Map(difficult, MAZE_WIDTH, MAZE_HEIGHT, X_OFFSET, Y_OFFSET, X_SCALE, Y_SCALE)
         self.maze_map.put_objects(self.walls_list, self.images[1])
         self.player = _create_player((30, self.height - 30), self.player_list, self.images[0])
 
@@ -59,6 +59,10 @@ class Game:
                 self.running = False
 
         keys = pygame.key.get_pressed()  # get tuple of 1 and 0; 1- key pressed / 0 - not pressed
+        if keys[pygame.K_ESCAPE]:
+            self.running = False
+            main_menu.MainMenu(self.screen, self.width, self.height).run()
+
         if keys[pygame.K_w]:
             self.player.forward = True
         else:
