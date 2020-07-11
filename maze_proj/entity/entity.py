@@ -17,7 +17,8 @@ class Entity(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = old_rect_center
 
-    def update(self):
-        x = (self.rect.centerx + self.x_motion) % 600
-        y = (self.rect.centery + self.y_motion) % 600
+    def update(self, width, height):
+        x = (self.rect.centerx + self.x_motion) % width
+        y = (self.rect.centery + self.y_motion) % height
+        print(x,y)
         self.rect.center = (x, y)

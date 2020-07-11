@@ -3,7 +3,7 @@ from app import App
 
 def main():
     print("dafaq")
-    App(600, 600, "dafaq").start()
+    App(int(1920 * 0.8), int(1080*0.8), "dafaq", True).start()
 
 
 if __name__ == "__main__":

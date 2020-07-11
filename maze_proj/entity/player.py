@@ -12,11 +12,11 @@ class Player(Entity):
         self.angle = 0
         self.acceleration = 2
 
-    def move(self):
+    def move(self, width, height):
         if self.forward:
             self.x_motion = self.acceleration * math.cos(math.radians(self.angle))
             self.y_motion = - self.acceleration * math.sin(math.radians(self.angle))
-            Entity.update(self)
+            Entity.update(self, width, height)
         if self.turn_left:
             self.angle = (self.angle + 10) % 360
         if self.turn_right:

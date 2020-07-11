@@ -1,38 +1,42 @@
 import pygame
 
+from System.UI.UI_elements.Text import Text
 from System.UI.UI_elements.button import Button
 from System.scenes.difficulty import Difficulty
 from System.scenes.info import Info
+from System.scenes.settings import Settings
+from colors import Colors
 
 
 class MainMenu:
-    def __init__(self, screen, weight, height):
+    def __init__(self, screen, images, is_fullscreen, scale):
+        self.header_font_size = int(20 * scale[1])
+        self.is_fullscreen = is_fullscreen
+        self.scale = scale
+
         self.screen = screen
-        self.weight = weight
-        self.height = height
         self.running = True
         self.click = False
-
+        self.images = images
         self.elements = pygame.sprite.Group()
-        game_button = Button((255, 30, 30), (100, 20), "play")
-        settings_button = Button((255, 30, 30), (100, 20), "settings")
-        score_button = Button((255, 30, 30), (100, 20), "score")
-        info_button = Button((255, 30, 30), (100, 20), "info")
-        exit_button = Button((255, 30, 30), (100, 20), "exit")
-        game_button.set_pos((self.weight // 2, 30))
-        settings_button.set_pos((self.weight // 2, 80))
-        score_button.set_pos((self.weight // 2, 140))
-        info_button.set_pos((self.weight // 2, 200))
-        exit_button.set_pos((self.weight // 2, 260))
-        self.elements.add(game_button)
-        self.elements.add(settings_button)
-        self.elements.add(score_button)
-        self.elements.add(info_button)
-        self.elements.add(exit_button)
+        labels = ["play", "settings", "score", "info", "exit"]
+        x_pos_button = self.screen.get_width() // 2
+        scale_y_offset = int(50 * scale[1])
+        y_pos_button = scale_y_offset
+        self.font_size = int(scale[1] * 16)
+        for label in labels:
+            y_pos_button += scale_y_offset
+            button = Button(Colors.RED, (int(100 * scale[0]), int(20 * scale[1])), label, self.font_size)
+            button.set_pos((x_pos_button, y_pos_button))
+            self.elements.add(button)
 
     def _render(self):
-        self.screen.fill((255, 255, 255))
+        self.screen.fill(Colors.WHITE)
         self.elements.draw(self.screen)
+        name = Text("Main menu", self.header_font_size, Colors.BLACK)
+        self.screen.blit(name.textSurf,
+                         (self.screen.get_width() // 2 - name.textSurf.get_width() // 2, int(self.scale[1]) * 10))
+
         pygame.display.flip()
 
     def _handle_events(self):
@@ -49,24 +53,23 @@ class MainMenu:
 
         for btn in self.elements:
             if isinstance(btn, Button):
-                if btn.get_label() == "play":
-                    if btn.get_rect().collidepoint((mx, my)) and self.click:
+                if btn.get_rect().collidepoint((mx, my)):
+                    btn.set_color(Colors.GREEN)
+                    if self.click:
                         self.running = False
-                        Difficulty(self.screen, self.weight, self.height).run()
-                if btn.get_label() == "settings":
-                    if btn.get_rect().collidepoint((mx, my)) and self.click:
-                        pass
-                if btn.get_label() == "score":
-                    if btn.get_rect().collidepoint((mx, my)) and self.click:
+                        if btn.get_label() == "play":
+                            Difficulty(self.screen, self.images, self.is_fullscreen, self.scale).run()
+                        if btn.get_label() == "settings":
+                            Settings(self.screen, self.images, self.is_fullscreen, self.scale).run()
 
-                        pass
-                if btn.get_label() == "info":
-                    if btn.get_rect().collidepoint((mx, my)) and self.click:
-
-                        Info(self.screen, self.weight, self.height).run()
-                if btn.get_label() == "exit":
-                    if btn.get_rect().collidepoint((mx, my)) and self.click:
-                        self.running = False
+                        if btn.get_label() == "info":
+                            Info(self.screen, self.images, self.is_fullscreen, self.scale).run()
+                        if btn.get_label() == "score":
+                            pass
+                        if btn.get_label() == "exit":
+                            self.running = False
+                else:
+                    btn.set_color(Colors.RED)
 
     def run(self):
         timer = pygame.time.Clock()

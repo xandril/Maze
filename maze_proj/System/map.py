@@ -2,11 +2,10 @@ from entity.wall import Wall
 
 
 class Map:
-    def __init__(self, difficult: str, map_width: int, map_height: int, offset_x: int, offset_y: int, scale_x: int,
+    def __init__(self, difficult: str,  offset_x: int, offset_y: int, scale_x: int,
                  scale_y: int):
         self.level_map = []
-        self.map_width = map_width
-        self.map_height = map_height
+
         self.x_offset = offset_x
         self.y_offset = offset_y
         self.scale_x = scale_x
