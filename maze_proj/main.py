@@ -1,10 +1,13 @@
-from app import App
+import pygame
+
+from application.app import App
+from application.system.UI.UI_elements.text_input import TextInput
 
 
 def main():
-    print("dafaq")
-    App(int(1920 * 0.8), int(1080*0.8), "dafaq", True).start()
+    App(int(800 * 0.8), int(600 * 0.8), "dafaq", False).start()
 
 
 if __name__ == "__main__":
     main()
+
