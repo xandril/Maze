@@ -32,16 +32,17 @@ class Scoreboard:
             button.set_pos((x_pos_button, y_pos_button))
             self.elements.add(button)
 
-    def _load_score_list(self, path):
+    def _load_score_list(self, path):  # load scorelist from txt  rank. name time
         self.score_list.clear()
         with open(path, 'r') as file_path:
             for line in file_path.readlines():
                 line = line.strip('\n')
                 self.score_list.append(line)
 
-    def _draw_text(self, x_pos):
+    def _draw_text(self, x_pos):  # pygame doesn't support '\n'
         y_offset = self.font_size * 2
         y_pos = 60
+        # so print textline by line
         for line in self.score_list:
             y_pos += y_offset
             text = Text(line, self.font_size, Colors.BLACK)
@@ -52,7 +53,7 @@ class Scoreboard:
         self.elements.draw(self.screen)
         x_pos = self.screen.get_width() // 2
         info = Text("Scoreboard", self.header_font_size, Colors.BLACK)
-        x_pos -= info.textSurf.get_width() // 2
+        x_pos -= info.textSurf.get_width() // 2 ###print text on the middle
         self.screen.blit(info.textSurf,
                          (x_pos, int(self.scale[1]) * 40))
         self._draw_text(x_pos)

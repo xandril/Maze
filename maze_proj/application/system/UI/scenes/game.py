@@ -14,7 +14,7 @@ X_SCALE = 40
 Y_SCALE = 40
 
 
-def timer_caster(time):
+def timer_caster(time):  # get time in format m:s:ns ( str)
     m = round((time // 60) % 60)
     s = (time % 60)
     ms = str((round((s - int(s)) * 1000)))

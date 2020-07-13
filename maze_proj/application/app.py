@@ -10,6 +10,8 @@ base_width = 800
 base_height = 600
 
 
+# base constants, if width and height != base, scale it
+
 class App:
     def __init__(self, width, height, title, is_fullscreen):
         pygame.init()

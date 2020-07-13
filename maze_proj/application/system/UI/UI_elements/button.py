@@ -13,7 +13,7 @@ class Button(Sprite):
         self.image.fill(color)
         self.rect = self.image.get_rect()
         self.image.blit(self.labelObj.textSurf, (self.image.get_width() // 2 - self.labelObj.textSurf.get_width() // 2,
-                                                 0))  # yeah boi, text get pos on the center of the f'cking button
+                                                 0))  # button center
 
     def set_pos(self, pos):
         self.rect.center = pos

@@ -14,7 +14,8 @@ class Settings:
         self.running = True
         self.click = False
         self.images = images
-        name_list = [(800, 600), (1024, 600), (1280, 720), (1920, 1080), "fullscreen", "back"]
+        name_list = [(800, 600), (1024, 600), (1280, 720), (1920, 1080), "fullscreen",
+                     "back"]  # labels names and also their functions
         self.elements = pygame.sprite.Group()
         base_y_scale = int(50 * self.scale[1])
         button_y_pos = base_y_scale
@@ -38,7 +39,7 @@ class Settings:
         text_pos_x = self.screen.get_width() // 2
         self.screen.blit(name.textSurf, (text_pos_x - name.textSurf.get_width() // 2, int(self.scale[1]) * 10))
         self.screen.blit(screen_res.textSurf,
-                         (text_pos_x - screen_res.textSurf.get_width() // 2, self.header_font_size*2))
+                         (text_pos_x - screen_res.textSurf.get_width() // 2, self.header_font_size * 2))
 
         pygame.display.flip()
 

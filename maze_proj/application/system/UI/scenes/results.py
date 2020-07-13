@@ -27,7 +27,6 @@ class Results:
         self.elements = pygame.sprite.Group()
         self.record = False
         labels = ["back"]
-        # self.user_name = None
         self.user_box = None
         self.font_size = int(16 * scale[1])
         self.header_font_size = int(20 * scale[1])
@@ -35,8 +34,8 @@ class Results:
         scale_y_offset = int(100 * scale[1])
         y_pos_button = scale_y_offset
 
-        if self.score_list[self.score_list.__len__() - 1][1] > time:
-            labels.insert(0, "add in top")
+        if self.score_list[self.score_list.__len__() - 1][1] > time: #### if time of player better then time of the worst list player
+            labels.insert(0, "add in top") ### he can add himself into the scoreboard
             self.user_box = TextBox(Colors.BLUE, (int(100 * scale[0]), int(20 * scale[1])), self.font_size+2)
             self.user_box.set_pos((x_pos_button-60*self.scale[0], y_pos_button))
 
@@ -61,9 +60,7 @@ class Results:
                           self.screen.get_height() // 2 - self.header_font_size * 4))
 
         if self.record:
-            self.user_box.draw(self.screen)
-
-
+            self.user_box.draw(self.screen) ### draw box and text in the box
         pygame.display.flip()
 
     def _handle_events(self):

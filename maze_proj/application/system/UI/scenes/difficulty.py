@@ -7,6 +7,7 @@ from application.system.UI.scenes.game import Game
 from application.system.colors import Colors
 
 
+# choose levels here
 class Difficulty:
     def __init__(self, screen, images, is_fullscreen, scale):
         self.is_fullscreen = is_fullscreen
@@ -18,6 +19,7 @@ class Difficulty:
 
         self.elements = pygame.sprite.Group()
         labels = ["easy", "normal", "hard", "back"]
+        # init GUI elements using  scale positions
         x_pos_button = self.screen.get_width() // 2
         scale_y_offset = int(50 * scale[1])
         y_pos_button = scale_y_offset
@@ -32,6 +34,7 @@ class Difficulty:
     def _render(self):
         self.screen.fill((255, 255, 255))
         self.elements.draw(self.screen)
+        # draw buttons( pygame functions that uses blit for all group elements)
         name = Text("Difficulty", self.header_font_size, Colors.BLACK)
         self.screen.blit(name.textSurf,
                          (self.screen.get_width() // 2 - name.textSurf.get_width() // 2, int(self.scale[1]) * 10))
@@ -48,10 +51,10 @@ class Difficulty:
                     self.click = True
 
     def _check_buttons(self):
-        mx, my = pygame.mouse.get_pos()
+        mx, my = pygame.mouse.get_pos()  # get mouse coords
 
         for btn in self.elements:
-            if isinstance(btn, Button):
+            if isinstance(btn, Button):  # if button  then if not pushed then it's green button
                 if btn.get_rect().collidepoint((mx, my)):
                     btn.set_color(Colors.GREEN)
                     if self.click:
@@ -67,7 +70,7 @@ class Difficulty:
     def run(self):
         timer = pygame.time.Clock()
         while self.running:
-            timer.tick(60)
+            timer.tick(60)  # framerate
             self._handle_events()
             self._check_buttons()
             self._render()

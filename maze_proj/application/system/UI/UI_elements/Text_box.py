@@ -22,13 +22,12 @@ class TextBox(pygame.sprite.Sprite):
         return self.rect
 
     def draw(self, screen):
-        field = pygame.Surface((100, 20))
-        field.fill(self.color)
+        self.image.fill(self.color)
 
-        field.blit(self.text_input.get_surface(),
-                   (field.get_width() // 2 - self.text_input.get_surface().get_width() // 2,
-                    5))
-        screen.blit(field, self.rect.center)
+        self.image.blit(self.text_input.get_surface(),
+                        (self.image.get_width() // 2 - self.text_input.get_surface().get_width() // 2,
+                         5))
+        screen.blit(self.image, self.rect.center)
 
     def handle_text(self, events):
         self.text_input.handle_text(events)

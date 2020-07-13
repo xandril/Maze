@@ -1,6 +1,7 @@
 import pygame
 
 
+# scale images
 class ImageLoader:
     @staticmethod
     def load_and_convert_image(fname, scale, angle):

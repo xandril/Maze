@@ -1,7 +1,4 @@
-import pygame
-
 from application.app import App
-from application.system.UI.UI_elements.text_input import TextInput
 
 
 def main():
@@ -10,4 +7,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -14,8 +14,8 @@ class Player(Entity):
 
     def move(self, width, height):
         if self.forward:
-            self.x_motion = self.acceleration * math.cos(math.radians(self.angle))
-            self.y_motion = - self.acceleration * math.sin(math.radians(self.angle))
+            self.x_motion = self.acceleration * math.cos(math.radians(self.angle)) #### x right ( pygame coords of the screen)
+            self.y_motion = - self.acceleration * math.sin(math.radians(self.angle)) ####  y - down
             Entity.update(self, width, height)
         if self.turn_left:
             self.angle = (self.angle + 10) % 360
