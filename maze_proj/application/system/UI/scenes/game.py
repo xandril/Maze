@@ -1,5 +1,5 @@
 import pygame
-
+import unior
 from application.entity.finish import Finish
 from application.entity.start import Start
 from application.entity.wall import Wall
@@ -53,6 +53,8 @@ class Game:
         self.maze_map = Map(difficult, x_offset, y_offset, x_scale, y_scale)
         self.maze_map.put_objects(self.player_list, self.objects_list, self.images)
         self.text_timer = Text("00:00:000", self.size_font, (0, 0, 0))
+        self.unior = unior.Unior()
+        self.debug_iter = 0
 
     def _render(self):
         self.screen.fill((255, 255, 255))
@@ -99,23 +101,49 @@ class Game:
         if keys[pygame.K_ESCAPE]:
             self.running = False
             main_menu.MainMenu(self.screen, self.images, self.is_fullscreen, self.scale).run()
-
-        if keys[pygame.K_w]:
-            self.player_list.sprites()[0].forward = True
+        left_hand = self.unior.map(self.unior.emg(0), self.unior.BOTTOM_THR_EMG, self.unior.TOP_THR_EMG, 0, 10)
+        right_hand = self.unior.map(self.unior.emg(1), self.unior.BOTTOM_THR_EMG, self.unior.TOP_THR_EMG, 0, 10)
+        self.debug_iter = self.debug_iter +1
+        print("iter=",self.debug_iter, "data:", left_hand, right_hand)
+        if left_hand >= 5:
+            left_hand = 1
         else:
-            self.player_list.sprites()[0].forward = False
-        if keys[pygame.K_d]:
+            left_hand = 0
+        if right_hand >= 5:
+            right_hand = 1
+        else:
+            right_hand = 0
+
+            if left_hand != 0 and right_hand != 0:
+                self.player_list.sprites()[0].forward = True
+            else:
+                self.player_list.sprites()[0].forward = False
+        if left_hand != 0:
+            self.player_list.sprites()[0].turn_left = True
+        else:
+            self.player_list.sprites()[0].turn_left = False
+        if right_hand != 0:
             self.player_list.sprites()[0].turn_right = True
         else:
             self.player_list.sprites()[0].turn_right = False
 
-        if keys[pygame.K_a]:
-            self.player_list.sprites()[0].turn_left = True
-        else:
-            self.player_list.sprites()[0].turn_left = False
+        if keys[pygame.K_w]:
+            self.player_list.sprites()[0].forward = True
+        # else:
+        #     self.player_list.sprites()[0].forward = False
+        # if keys[pygame.K_d]:
+        #     self.player_list.sprites()[0].turn_right = True
+        # else:
+        #     self.player_list.sprites()[0].turn_right = False
+        #
+        # if keys[pygame.K_a]:
+        #     self.player_list.sprites()[0].turn_left = True
+        # else:
+        #     self.player_list.sprites()[0].turn_left = False
 
     def run(self):
         timer = pygame.time.Clock()
+        self.unior.handshake((0,1))
 
         while self.running:
             timer.tick(60)
