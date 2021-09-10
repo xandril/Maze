@@ -1,6 +1,3 @@
-import serial
-
-import unior
 from application.app import App
 
 

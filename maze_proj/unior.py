@@ -16,7 +16,7 @@ class Unior:
         number_of_channels = len(channels)
         while True:
             try:
-                s = self.ser.read(3).decode()  # Читаем только 3 байта
+                s = self.ser.read(3).decode()  # read 3 bytes
                 print(s)
                 if s == "OK\n":
                     for n in range(0, number_of_channels):
@@ -28,32 +28,30 @@ class Unior:
                     print(reply)
                     self.ser.write(reply.encode())
                     return True
-            except KeyboardInterrupt:  # Делаем исключение на всякий случай
-                # для корректного завершения работы порта
+            except KeyboardInterrupt:  #
                 print("Stopped connection with ttyS0 port")
                 return False
 
     def _read(self, channel):
         while True:
-            self.ser.flushInput()  # Очистка буфера
+            self.ser.flushInput()  # clear buffer
             self.ser.write(pack('B', channel))
-            time.sleep(.005)  # Задержка перед считыванием данных, чтобы не получить мусор
-            if self.ser.inWaiting():  # Проверка на наличие входных данных в буфере
-                rawdata = self.ser.read(4)  # Читаем ровно 4 байта, потому что нужен float
-                data, = unpack('f', rawdata)  # Декодировка, unpack возврящает tuple (data, )
-                if data != data:  # Проверка на NaN
+            time.sleep(.005)  # defeat fucking garbage
+            if self.ser.inWaiting():  # check buffer is not empty
+                rawdata = self.ser.read(4)  # read 4 byte - float
+                data, = unpack('f', rawdata)  # decode , unpack return tuple (data, )
+                if data != data:  # check NaN
                     continue
                 else:
                     break
         return data
 
     def map(self, x, in_min, in_max, out_min, out_max):
-        return ((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
-    # Возвращает ЭМГ
+    # return emg
     def emg(self, channel):
         e = self._read(channel)
-        # print("eeeee ==", e)
         if self.BOTTOM_THR_EMG < e < self.TOP_THR_EMG:
             return e
         else:
